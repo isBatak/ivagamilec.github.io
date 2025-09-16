@@ -12,25 +12,146 @@ This tutorial will guide you through migrating your existing HTML, CSS, and Java
 
 ## Step 1: Initialize Next.js in Current Directory
 
-Since you already have existing files, we'll set up Next.js in the current directory alongside your existing HTML, CSS, and JS files. The `create-next-app` command will detect existing files and show a conflict error, so we need to use the `--force` flag to proceed.
+Since you already have existing files, we'll set up Next.js manually in the current directory. The `create-next-app` command doesn't allow initialization in directories with existing files, so we'll set up Next.js step by step.
 
-Open your terminal in your project directory and run:
+### Manual Next.js Setup
+
+1. **Initialize npm project** (if you don't have package.json):
 
 ```bash
-npx create-next-app@latest . --typescript --eslint --no-tailwind --src-dir --app --force
+npm init -y
 ```
 
-This command will:
-- Initialize Next.js in the current directory (`.`) with `--force` to override the conflict check
-- Set up TypeScript for better development experience
-- Configure ESLint for code quality
-- Skip Tailwind CSS (we'll use your existing CSS)
-- Create a `src/` directory for better organization
-- Use the modern App Router
+2. **Install Next.js and dependencies**:
 
-The `--force` flag allows Next.js to initialize even when there are existing files in the directory.
+```bash
+npm install next@latest react@latest react-dom@latest
+npm install --save-dev typescript @types/react @types/node @types/react-dom eslint eslint-config-next
+```
 
-## Step 2: Understand the Project Structure
+3. **Create Next.js configuration file** - Create `next.config.js`:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {}
+
+module.exports = nextConfig
+```
+
+4. **Create TypeScript configuration** - Create `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+5. **Update package.json scripts** - Add these scripts to your package.json:
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  }
+}
+```
+
+6. **Create the src directory structure**:
+
+```bash
+mkdir -p src/app
+```
+
+## Step 2: Create Essential Next.js Files
+
+Now we need to create the core Next.js files in the `src/app` directory:
+
+1. **Create `src/app/layout.tsx`** (Root layout):
+
+```tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'iva',
+  description: 'Iva UI Dashboard',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+      </body>
+    </html>
+  )
+}
+```
+
+2. **Create `src/app/page.tsx`** (Home page):
+
+```tsx
+export default function Home() {
+  return (
+    <main></main>
+  );
+}
+```
+
+3. **Create `src/app/globals.css`** (Global styles):
+
+```css
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+```
+
+4. **Create `.eslintrc.json`** (ESLint configuration):
+
+```json
+{
+  "extends": "next/core-web-vitals"
+}
+```
+
+## Step 3: Understand the Project Structure
 
 After initialization, your project directory will now contain both your existing files and new Next.js files:
 
@@ -56,11 +177,11 @@ your-project/
 
 Your existing files remain untouched, and you can reference them as needed during the migration.
 
-## Step 3: Clean Up Default Files
+## Step 4: Clean Up Default Files
 
-Let's remove the default styling and content to prepare for our migration:
+Since we created the files manually, let's make sure they have the right content:
 
-1. **Clear the default page content** - Open `src/app/page.tsx`:
+1. **Update the default page content** - Edit `src/app/page.tsx` if needed:
 
 ```tsx
 export default function Home() {
@@ -72,23 +193,7 @@ export default function Home() {
 }
 ```
 
-2. **Clear global styles** - Open `src/app/globals.css` and remove all content except:
-
-```css
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-```
-
-## Step 4: Integrate Your Existing CSS
+## Step 5: Integrate Your Existing CSS
 
 Since your CSS files (`style.css` and `style2.css`) are already in the root directory, we need to move them to the Next.js structure:
 
@@ -104,7 +209,7 @@ Since your CSS files (`style.css` and `style2.css`) are already in the root dire
    # mv your-images/* public/
    ```
 
-## Step 5: Set Up Your Layout
+## Step 6: Set Up Your Layout
 
 Update `src/app/layout.tsx` to include your CSS and Font Awesome:
 
@@ -140,7 +245,7 @@ export default function RootLayout({
 }
 ```
 
-## Step 6: Create Your First Component
+## Step 7: Create Your First Component
 
 Now let's convert your navbar HTML from `index.html` to a React component. Create `src/app/components/navbar.tsx`:
 
@@ -246,7 +351,7 @@ export default function Navbar() {
 }
 ```
 
-## Step 7: Update Your Main Page
+## Step 8: Update Your Main Page
 
 Update `src/app/page.tsx` to include the navigation component:
 
@@ -263,7 +368,7 @@ export default function Home() {
 }
 ```
 
-## Step 8: Run Your Development Server
+## Step 9: Run Your Development Server
 
 Start the development server:
 
@@ -273,7 +378,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see your migrated application.
 
-## Step 9: Create Additional Pages
+## Step 10: Create Additional Pages
 
 Create a products page at `src/app/products/page.tsx`:
 
@@ -293,7 +398,7 @@ export default function Products() {
 }
 ```
 
-## Step 10: Understanding File Migration
+## Step 11: Understanding File Migration
 
 Your existing files serve as reference during migration:
 
