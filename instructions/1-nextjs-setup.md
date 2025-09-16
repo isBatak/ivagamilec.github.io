@@ -10,51 +10,51 @@ This tutorial will guide you through migrating your existing HTML, CSS, and Java
 - Basic knowledge of HTML, CSS, and JavaScript
 - Familiarity with command line/terminal
 
-## Step 1: Create a New Next.js Project
+## Step 1: Initialize Next.js in Current Directory
 
-First, let's create a new Next.js project. Open your terminal and run:
-
-```bash
-npx create-next-app@latest iva-nextjs-app
-```
-
-You'll be prompted with several questions. For this migration, choose:
-
-```
-✔ Would you like to use TypeScript? … No / Yes  (Choose Yes for better development experience)
-✔ Would you like to use ESLint? … No / Yes  (Choose Yes)
-✔ Would you like to use Tailwind CSS? … No / Yes  (Choose No, we'll use our existing CSS)
-✔ Would you like to use `src/` directory? … No / Yes  (Choose Yes for better organization)
-✔ Would you like to use App Router? … No / Yes  (Choose Yes, it's the modern approach)
-✔ Would you like to customize the default import alias (@/*)? … No / Yes  (Choose No)
-```
-
-## Step 2: Navigate to Your Project
+Since you already have existing files, we'll set up Next.js in the current directory alongside your existing HTML, CSS, and JS files. Open your terminal in your project directory and run:
 
 ```bash
-cd iva-nextjs-app
+npx create-next-app@latest . --typescript --eslint --no-tailwind --src-dir --app
 ```
 
-## Step 3: Understand the Project Structure
+This command will:
+- Initialize Next.js in the current directory (`.`)
+- Set up TypeScript for better development experience
+- Configure ESLint for code quality
+- Skip Tailwind CSS (we'll use your existing CSS)
+- Create a `src/` directory for better organization
+- Use the modern App Router
 
-Your new Next.js project will have this structure:
+If prompted about overwriting files, choose "Yes" to proceed.
+
+## Step 2: Understand the Project Structure
+
+After initialization, your project directory will now contain both your existing files and new Next.js files:
 
 ```
-iva-nextjs-app/
-├── public/                 # Static files (images, icons, etc.)
-├── src/
-│   └── app/               # App Router directory
-│       ├── globals.css    # Global CSS styles
-│       ├── layout.tsx     # Root layout component
-│       ├── page.tsx       # Home page component
-│       └── favicon.ico    # Favicon
-├── next.config.js         # Next.js configuration
-├── package.json          # Dependencies and scripts
-├── tailwind.config.ts    # Tailwind configuration (if you chose it)
-└── tsconfig.json         # TypeScript configuration
+your-project/
+├── index.html             # Your existing HTML file
+├── main.js               # Your existing JavaScript
+├── style.css             # Your existing CSS files
+├── style2.css
+├── modules/
+│   └── color-mode.js     # Your existing modules
+├── public/               # Next.js static files (new)
+├── src/                  # Next.js source directory (new)
+│   └── app/             # App Router directory
+│       ├── globals.css   # Global CSS styles
+│       ├── layout.tsx    # Root layout component
+│       ├── page.tsx      # Home page component
+│       └── favicon.ico   # Favicon
+├── next.config.js        # Next.js configuration (new)
+├── package.json          # Dependencies and scripts (new)
+└── tsconfig.json         # TypeScript configuration (new)
 ```
 
-## Step 4: Clean Up Default Files
+Your existing files remain untouched, and you can reference them as needed during the migration.
+
+## Step 3: Clean Up Default Files
 
 Let's remove the default styling and content to prepare for our migration:
 
@@ -86,14 +86,23 @@ body {
 }
 ```
 
-## Step 5: Copy Your Existing Assets
+## Step 4: Integrate Your Existing CSS
 
-1. **Copy your CSS files** to the `src/app/` directory:
-   - Copy `style.css` and `style2.css` to `src/app/`
+Since your CSS files (`style.css` and `style2.css`) are already in the root directory, we need to move them to the Next.js structure:
 
-2. **Copy any images or static assets** to the `public/` directory
+1. **Move your CSS files** to the `src/app/` directory:
+   ```bash
+   mv style.css src/app/
+   mv style2.css src/app/
+   ```
 
-## Step 6: Set Up Your Layout
+2. **Keep any images or static assets** in the `public/` directory or create it if needed:
+   ```bash
+   # If you have images, move them to public/
+   # mv your-images/* public/
+   ```
+
+## Step 5: Set Up Your Layout
 
 Update `src/app/layout.tsx` to include your CSS and Font Awesome:
 
@@ -129,9 +138,9 @@ export default function RootLayout({
 }
 ```
 
-## Step 7: Create Your First Component
+## Step 6: Create Your First Component
 
-Now let's convert your navbar HTML to a React component. Create `src/app/components/navbar.tsx`:
+Now let's convert your navbar HTML from `index.html` to a React component. Create `src/app/components/navbar.tsx`:
 
 ```tsx
 export default function Navbar() {
@@ -235,9 +244,9 @@ export default function Navbar() {
 }
 ```
 
-## Step 8: Update Your Main Page
+## Step 7: Update Your Main Page
 
-Update `src/app/page.tsx` to include the navbar:
+Update `src/app/page.tsx` to include the navigation component:
 
 ```tsx
 import Navbar from './components/navbar'
@@ -252,7 +261,7 @@ export default function Home() {
 }
 ```
 
-## Step 9: Run Your Development Server
+## Step 8: Run Your Development Server
 
 Start the development server:
 
@@ -262,7 +271,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see your migrated application.
 
-## Step 10: Create Additional Pages
+## Step 9: Create Additional Pages
 
 Create a products page at `src/app/products/page.tsx`:
 
@@ -281,6 +290,18 @@ export default function Products() {
   );
 }
 ```
+
+## Step 10: Understanding File Migration
+
+Your existing files serve as reference during migration:
+
+- **`index.html`**: Use as reference for HTML structure to convert to React components
+- **`products.html`**: Reference for the products page structure  
+- **`main.js`**: JavaScript logic will be converted to React hooks in later chapters
+- **`modules/color-mode.js`**: Will be converted to a React hook in Chapter 7
+- **`style.css` and `style2.css`**: Now integrated into your Next.js app
+
+You can keep these files for reference or remove them once migration is complete.
 
 ## Key Differences from HTML to Next.js
 
