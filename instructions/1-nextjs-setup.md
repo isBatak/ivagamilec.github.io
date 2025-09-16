@@ -12,21 +12,23 @@ This tutorial will guide you through migrating your existing HTML, CSS, and Java
 
 ## Step 1: Initialize Next.js in Current Directory
 
-Since you already have existing files, we'll set up Next.js in the current directory alongside your existing HTML, CSS, and JS files. Open your terminal in your project directory and run:
+Since you already have existing files, we'll set up Next.js in the current directory alongside your existing HTML, CSS, and JS files. The `create-next-app` command will detect existing files and show a conflict error, so we need to use the `--force` flag to proceed.
+
+Open your terminal in your project directory and run:
 
 ```bash
-npx create-next-app@latest . --typescript --eslint --no-tailwind --src-dir --app
+npx create-next-app@latest . --typescript --eslint --no-tailwind --src-dir --app --force
 ```
 
 This command will:
-- Initialize Next.js in the current directory (`.`)
+- Initialize Next.js in the current directory (`.`) with `--force` to override the conflict check
 - Set up TypeScript for better development experience
 - Configure ESLint for code quality
 - Skip Tailwind CSS (we'll use your existing CSS)
 - Create a `src/` directory for better organization
 - Use the modern App Router
 
-If prompted about overwriting files, choose "Yes" to proceed.
+The `--force` flag allows Next.js to initialize even when there are existing files in the directory.
 
 ## Step 2: Understand the Project Structure
 
